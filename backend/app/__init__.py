@@ -15,6 +15,7 @@ migrate = Migrate()
 def create_app():
     app = Flask(__name__)
     
+    # Database Configuration
     app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}?charset=utf8mb4"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET')
@@ -24,13 +25,14 @@ def create_app():
     jwt.init_app(app)
     migrate.init_app(app, db)
     
-    # Configure CORS - only once
+    # CORS Configuration – only once
     CORS(app, 
          origins=["http://localhost:3000"], 
          supports_credentials=True,
          allow_headers=["Content-Type", "Authorization"],
          methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
     
+    # Error handlers
     @app.errorhandler(400)
     def bad_request(e):
         return jsonify({'error': 'Bad request', 'message': str(e)}), 400
@@ -47,6 +49,7 @@ def create_app():
     def server_error(e):
         return jsonify({'error': 'Server error', 'message': 'Internal server error'}), 500
     
+    # Blueprints
     from .routes.auth import auth_bp
     from .routes.health import health_bp
     from .routes.appointments import appointments_bp

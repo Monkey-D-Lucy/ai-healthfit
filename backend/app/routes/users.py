@@ -9,7 +9,17 @@ users_bp = Blueprint('users', __name__)
 def get_doctors():
     try:
         doctors = User.query.filter_by(role='doctor', is_active=True).all()
-        return jsonify({'doctors': [d.to_dict() for d in doctors]})
+        result = []
+        for doctor in doctors:
+            result.append({
+                'id': doctor.id,
+                'first_name': doctor.first_name,
+                'last_name': doctor.last_name,
+                'email': doctor.email,
+                'specialization': 'General Medicine',  # Default specialization
+                'full_name': f"{doctor.first_name} {doctor.last_name}"
+            })
+        return jsonify({'doctors': result})
     except Exception as e:
         print(f"Error in get_doctors: {str(e)}")
         return jsonify({'doctors': []}), 200

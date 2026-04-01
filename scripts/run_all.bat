@@ -5,17 +5,17 @@ echo ========================================
 echo.
 
 echo Starting Backend Server (Port 5000)...
-start "HealthFit Backend" cmd /k "cd backend && python run.py"
+start "HealthFit Backend" cmd /k "cd backend && call venv\Scripts\activate && python run.py"
 
-timeout /t 2 /nobreak >nul
+timeout /t 3 /nobreak >nul
+
+echo Starting AI Service (Port 5001)...
+start "HealthFit AI Service" cmd /k "cd ai-service && call venv\Scripts\activate && python app.py"
+
+timeout /t 3 /nobreak >nul
 
 echo Starting Frontend (Port 3000)...
 start "HealthFit Frontend" cmd /k "cd frontend && npm start"
-
-timeout /t 2 /nobreak >nul
-
-echo Starting AI Service (Port 5001)...
-start "HealthFit AI Service" cmd /k "cd ai-service && python app.py"
 
 echo.
 echo ========================================

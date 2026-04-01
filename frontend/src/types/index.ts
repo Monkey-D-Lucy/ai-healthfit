@@ -6,8 +6,10 @@ export interface User {
   role: string;
   avatar_url?: string;
   full_name: string;
+  phone?: string;
+  date_of_birth?: string;
+  gender?: string;
 }
-
 export interface HealthMetric {
   id: number;
   metric_type: string;

@@ -12,6 +12,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard'));
 const HealthPage = lazy(() => import('./pages/HealthPage'));
 const AppointmentsPage = lazy(() => import('./pages/AppointmentsPage'));
 const AIInsightsPage = lazy(() => import('./pages/AIInsightsPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ function App() {
               <Route path="/health" element={<HealthPage />} />
               <Route path="/appointments" element={<AppointmentsPage />} />
               <Route path="/ai-insights" element={<AIInsightsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Route>
         </Routes>

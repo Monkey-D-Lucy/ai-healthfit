@@ -77,3 +77,32 @@ def refresh():
     user_id = get_jwt_identity()
     access_token = create_access_token(identity=user_id)
     return jsonify({'access_token': access_token})
+@auth_bp.route('/profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    try:
+        user_id = get_jwt_identity()
+        user = User.query.get(user_id)
+        
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+        
+        data = request.get_json()
+        
+        if 'first_name' in data:
+            user.first_name = data['first_name']
+        if 'last_name' in data:
+            user.last_name = data['last_name']
+        if 'phone' in data:
+            user.phone = data['phone']
+        if 'date_of_birth' in data and data['date_of_birth']:
+            user.date_of_birth = datetime.strptime(data['date_of_birth'], '%Y-%m-%d').date()
+        if 'gender' in data:
+            user.gender = data['gender']
+        
+        db.session.commit()
+        
+        return jsonify({'user': user.to_dict()})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
